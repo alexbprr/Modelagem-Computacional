@@ -12,4 +12,5 @@ Python versão >= 3.7 com as seguintes bibliotecas:
   - Plotly;
 
 gcc, g++ 
+
 Biblioteca Boost para C++ 
