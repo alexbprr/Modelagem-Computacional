@@ -11,6 +11,6 @@ Python versão >= 3.7 com as seguintes bibliotecas:
   - Matplotlib;
   - Plotly; 
  
-Gcc, G++ 
+gcc, g++ 
 
 Biblioteca Boost para C++. 
