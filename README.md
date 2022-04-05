@@ -14,3 +14,5 @@ Python versão >= 3.7 com as seguintes bibliotecas:
 gcc, g++ 
 
 Biblioteca Boost para C++: https://www.boost.org/
+
+Compilador de EDOs (Autor: Rafael Sachetto): https://github.com/rsachetto/odecompiler
