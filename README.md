@@ -13,4 +13,4 @@ Python versão >= 3.7 com as seguintes bibliotecas:
 
 gcc, g++ 
 
-Biblioteca Boost para C++ 
+Biblioteca Boost para C++: https://www.boost.org/
