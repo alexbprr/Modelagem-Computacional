@@ -85,7 +85,7 @@ public:
     static bool terminationCondition(const DifferentialEvolution& de){
         //cout << "Testing termination condition" << endl; 
         //cout << "Best cost " << de.GetBestCost() << endl;
-        if (de.GetBestCost() <= pow(10.0,-2))
+        if (de.GetBestCost() <= 1)
             return true;
         return false; 
     }

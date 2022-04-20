@@ -17,9 +17,6 @@ from matplotlib.backends.backend_pdf import PdfPages
 import seaborn
 import decimal as dc
 dc.getcontext().prec = 2
-import scipy.integrate as scint
-#from sympy.solvers.solveset import nonlinsolve
-from scipy.optimize import fsolve
 
 #Graph setup
 seaborn.set(style='ticks')
@@ -31,8 +28,10 @@ seaborn.despine(ax=ax, offset=0)
 #Parameters initialization
 fileEndingName = str(sys.argv[1])
 N_POINTS = 50
-x = np.linspace(0.0, 1.0, N_POINTS)
-y = np.linspace(0.0, 1.0, N_POINTS)
+maxX = 40
+maxY = 40
+x = np.linspace(0.0, maxX, N_POINTS)
+y = np.linspace(0.0, maxY, N_POINTS)
 x_y = [[[x[p],y[k]] for k in range(0,N_POINTS)] for p in range(0,N_POINTS)]
 
 u_key = str(sys.argv[2])
@@ -42,84 +41,18 @@ u = sp.Symbol(u_key)
 v = sp.Symbol(v_key)
 f = sp.Symbol(f_key)
 variables = [u,v]
-#bacteria parameters
-r = 1.
-m_b = 0
-a = 1
-#neutrophil parameters
-s = 1
-l = 5
 
-#fibrin parameters
-k = 3
-p = 3
+r = 0.5
+a = 0.05
+m = 0.2 
+K = 30 
 
-#weights
-wbb=1.
-wcoab=1.1 #2*0
-wnb=1.1
-wfibb=3. #1.2
-
-wbcoa=1.1
-wcoacoa=1.
-wncoa=1.2
-wfibcoa=0.
-
-#wbfib=1.2
-wcoafib=0
-#wnfib=0
-#wfibfib=1
-
-wbn=1.1
-wcoan=0.5
-wnn=1
-wfibn=1
-
-wbto=0
-wcoato=0
-wnto=0
-wfibto=0
-wtoto=1
-
-lambda_ = 4
-halfsat = 0.2
-
-def inhibition(alpha, gamma, population):
-    return (alpha + 1)*pow(population, gamma)/(alpha + pow(population, gamma))
-
-# define system in terms of separated differential equations
-#def fib(f,b):
-    #return r1*f*(1 - f/k1 - b12*b/k1) -m*f
- #   return k*b*f*(1 - a1*b - a2*f)
 def dudt(u,v):
-    return k*u*(1 - wbcoa*inhibition(0.15,2,v) - wcoacoa*u)
-    #return s*u*v/(1 + wbn*u + wnn*v) - a*u*v
-    #return p*v*(1 - v)*(1 - wbcoa*v)/(wcoacoa)
-    #return k*(1 - v)*(1 - wbcoa*v)/(wcoacoa)
-    #return k*u*(1 - wbcoa*v - wcoacoa*u - wfibcoa*u*v)#*(1 - u - v))
-    #return k*u*v*(1 - wbcoa*v - wcoacoa*u - wfibcoa*p*v*(1 - v)*u)
-    #return k*u*v*(1 - wbcoa*v - wcoacoa*u - wfibcoa*p*(1 - v)*u)
-    #return r*v*(1 - wbb*v - wcoab*1 - wfibb*u) + k*v*(1 - wbcoa*v - wcoacoa*1 - wfibcoa*u)
-    #return p*v*(1 - wbcoa*v - wfibcoa*u - p/k)/wcoacoa
-    #return k*u*v*(1 - wbcoa*v - wcoacoa*u - wfibcoa*u*v)
-    #return k*((1 + halfsat)*pow(v,lambda_))/(halfsat + pow(v,lambda_))*(1 - wbcoa*v - wcoacoa*u - wfibcoa*u*v)
-    #return p*v*(1 - wbcoa*v)*(1 - wfibfib*u - wbfib*v) considerando muito rapida a dinamica de coa: dcoa/dt = 0
+    return r*u*(1 - u/K) - a*u*v 
 
 def dvdt(u,v):
-    return r*v*(1 - wcoab*inhibition(0.15,2,u) - wbb*v)
-    #return r*v*(1 - wbb*v -wcoab*(1 - wbcoa*v)/(wcoacoa) - wfibb*u)
-    #return r*v*(1 - wbb*v -wcoab*u - wfibb*p*(1 - v)*u)
-    #return r*v*(1 - wbb*v - wcoab*(1 - wbcoa*v)/(wcoacoa) - wfibb*u)
-    #return r*v*(1 - wbb*v -wcoab*u - wfibb*u*v)#*(1 - u - v))
-    #return r*v*(1 - wbb*v -wcoab*u - wfibb*p*v*(1 - v)*u) #Ultim0
-    #return r*v*(1 - wbb*v - wcoab*u -wfibb*u*v)
-    #return r*v*(1 - wbb*v - wcoab*1 - wfibb*u)
-    #return r*v*(1 - wbb*v - wcoab*u - wfibb*u*v)
-    #return r*v*(1 - wcoab*(1 - wbcoa*v) - wfibb*u - wbb*v) considerando muito rapida a dinamica de coa: dcoa/dt = 0
+    return a*u*v - m*v
 
-def f(x):
-    return np.array([k*x[0]*x[1]*(1 - wbcoa*x[1] - wcoacoa*x[0] - wfibcoa*x[0]*x[1]),
-    r*x[1]*(1 - wbb*x[1] - wcoab*x[0] - wfibb*x[0]*x[1])])
 
 def equations(p):
    u,v = p
@@ -142,18 +75,17 @@ jacMat = eqMat.jacobian(Mat)
 print('Jacobian Matrix\n %s' % jacMat)
 print('---------------------')
 
-UEqual = sp.Eq(U, 0.)
-VEqual = sp.Eq(V, 0.)
+UEqual = sp.Eq(U, 0)
+VEqual = sp.Eq(V, 0)
 fp = []
-eqp = []
+eqp = sp.solve((UEqual, VEqual),u,v)
 
-print("Equilibrium points: " + str(eqp))
-# for e in eqp:
-#     if (u in e and v in e):
-#         #print('value: ' + str(e.get(u)))
-#         fp.append((e[u],e[v]))
-#
-# print("Equilibrium points tuple list: " + str(fp))
+for e in eqp:
+    if (u in e and v in e):
+        #print('value: ' + str(e.get(u)))
+        fp.append((e[u],e[v]))
+
+print("Equilibrium points tuple list: " + str(fp))
 
 if not fp:
     fp = eqp
@@ -313,8 +245,8 @@ for i in range(len(fp)):
 #    maximo_b = 1.
 
 #Create, plot and save the graph
-x = np.linspace(0.0, 1., N_POINTS-20)
-y = np.linspace(0.0, 1., N_POINTS-20)
+x = np.linspace(0.0, maxX, N_POINTS-20)
+y = np.linspace(0.0, maxY, N_POINTS-20)
 x1 , y1  = np.meshgrid(x,y)                    # create a grid
 dx = dudt(x1,y1)
 dy = dvdt(x1,y1)
@@ -336,7 +268,7 @@ params = {'legend.fontsize': 'large',
          'xtick.labelsize':'17',
          'ytick.labelsize':'17'}
 plt.rcParams.update(params)
-plt.axis([-0.01, 1.+0.025, -0.01, 1.+0.025])
+plt.axis([-1, maxX, -1, maxY])
 plt.xlabel(str(sys.argv[2]),fontsize=17);
 plt.ylabel(str(sys.argv[3]),fontsize=17);
 

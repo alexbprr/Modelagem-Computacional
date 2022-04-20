@@ -40,12 +40,13 @@ def isReferenceTime(times, ct):
 
 def solve(x):
     (tfinal,t,dt) = setTime()
-    P = setInitialCondition()
-    r = x[0]
-    k = x[1]
+    #P = setInitialCondition()
+    r = x[1]
+    k = x[2]
     params = (r,k)
-    #P[0] = temp[0]
-    #temp = np.delete(temp,0)
+    P = np.zeros(1)
+    P[0] = x[0]
+    
     def solveOde(t, y):
         return odeSystem(t, y, *params)
 
@@ -70,10 +71,11 @@ if __name__ == "__main__":
     reference_times = np.loadtxt(path+'t.dat', delimiter='\n')
     data = np.loadtxt(path+'data.dat', delimiter='\n')
     bounds = [
-        (0.01, 1), (1,200)
+        (1, 200), (0.01, 1), (1,200)
     ]
     #chama evolução diferencial, result contém o melhor individuo
-    solucao = differential_evolution(solve, bounds, strategy='best1bin', maxiter=50,popsize=50, disp=True, workers=4)
+    solucao = differential_evolution(solve, bounds, tol=10**(-2), 
+    strategy='best1bin', maxiter=50,popsize=50, disp=True, workers=4)
     print(solucao.x)
     print(solucao.success)
     #saving the best offspring...

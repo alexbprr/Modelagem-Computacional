@@ -12,7 +12,7 @@ import scipy.linalg as slin
 
 # EDOs do sistema
 def dEdt(E,I,V,T,*params):
-    return -b*E*V + r*E
+    return -b*E*V + 0.001*(10000 - E)
 
 def dIdt(E,I,V,T,*params):
     return b*E*V - k*I*T - a*I
