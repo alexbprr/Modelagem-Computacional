@@ -84,17 +84,17 @@ ax.plot(x_val,y_val,'o',label='data', color='blue')
 def logistico(a, n, K, i):
     return a*n[i]*(1 - n[i]/K)
 
-N = 1000
+T = 1000
 n = []
 n.append(19.87) 
-a = 0.10307
+r = 0.10307
 k = 98.60712 
 tfinal = 50
-t = np.linspace(0, tfinal, N)
-dt = (tfinal - 0)/N
+t = np.linspace(0, tfinal, T)
+dt = (tfinal - 0)/T
 
-for i in range(0,N-1):
-    n.append(logistico(a, n, k, i)*dt + n[i])
+for i in range(0,T-1):
+    n.append(logistico(r, n, k, i)*dt + n[i])
 
 #plt.xlim([0, tfinal])
 #plt.ylim([0,2*k+1])
