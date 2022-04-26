@@ -1,0 +1,10 @@
+yAxisLabel: cells/ml
+plotStyle: line
+numberOfResults: 5
+xAxisLabel: days
+plotManyResults: true
+separatePlots: true
+fileNames: gilles_run_4, gilles_run_3, gilles_run_1, gilles_run_0, gilles_run_2
+dataNames: Prey, Predator
+xAxisRange: 0-500
+numberOfDataFiles: 1

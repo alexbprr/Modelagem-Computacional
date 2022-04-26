@@ -33,7 +33,7 @@ def createFigure(title):
 def initializeGraphParameters():
     global scalarMap, color_index, colorVal
     cm = plt.get_cmap('jet')
-    cNorm  = colors.Normalize(vmin=0, vmax=100)
+    cNorm  = colors.Normalize(vmin=0, vmax=50)
     scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=cm)
     color_index = 0
     colorVal = scalarMap.to_rgba(color_index)
@@ -47,25 +47,47 @@ initializeGraphParameters()
 odeValues = readFile(dir_+'oderesults.csv')
 print(odeValues)
 t = odeValues['Time']
-H = odeValues['Prey']
-P = odeValues['Predator']
+E = odeValues['E']
+T = odeValues['T']
+I = odeValues['I']
+V = odeValues['V']
 
-fig,ax = createFigure('H')
-ax.plot(t, H, label="Presa", color=colorVal)
-color_index += 8
+fig,ax = createFigure('E')
+color_index += 50/4
+ax.plot(t, E, label="E", color=colorVal)
 colorVal = scalarMap.to_rgba(color_index)
 ax.legend(loc='upper right', fontsize=15)
 ax.grid()
-saveFig(fig,dir_+'H')
+saveFig(fig,dir_+'E')
 fig.clear()
 ax.clear()
 
-fig,ax = createFigure('P')
-ax.plot(t,P,label="Predador", color=colorVal)
-color_index += 8
+fig,ax = createFigure('V')
+color_index += 50/4
 colorVal = scalarMap.to_rgba(color_index)
+ax.plot(t,V,label="V", color=colorVal)
 ax.legend(loc='upper right', fontsize=15)
 ax.grid()
-saveFig(fig,dir_+'P')
+saveFig(fig,dir_+'V')
+fig.clear()
+ax.clear()
+
+fig,ax = createFigure('I')
+color_index += 50/4
+colorVal = scalarMap.to_rgba(color_index)
+ax.plot(t,I,label="I", color=colorVal)
+ax.legend(loc='upper right', fontsize=15)
+ax.grid()
+saveFig(fig,dir_+'I')
+fig.clear()
+ax.clear()
+
+fig,ax = createFigure('T')
+color_index += 50/4
+colorVal = scalarMap.to_rgba(color_index)
+ax.plot(t,T,label="T", color=colorVal)
+ax.legend(loc='upper right', fontsize=15)
+ax.grid()
+saveFig(fig,dir_+'T')
 fig.clear()
 ax.clear()
