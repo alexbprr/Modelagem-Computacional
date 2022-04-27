@@ -4,14 +4,14 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 if __name__ == '__main__':
     N = 500  # whole population
-    beta = 2  # transmission rate
-    gamma = 0.5  # recovery rate
+    beta = 3  # transmission rate
+    gamma = 0.3  # recovery rate
     t = 15  # duration
 
     I0 = 3
     initials = [N - I0, I0, 0]  # S, I, R
 
-    propensities = [lambda s, i, r: beta * s * i / N,  # S -> I, Propensity: b * S(t) * I(t) / N
+    propensities = [lambda s, i, r: (beta * s * i) / N,  # S -> I, Propensity: b * S(t) * I(t) / N
                     lambda s, i, r: gamma * i]  # I -> R Propensity: g * I(t)
 
     stoichiometry = [[-1, 1, 0],  # S -> I, Population change: S-1, I+1, R+0
