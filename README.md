@@ -19,4 +19,5 @@ Compilador de EDOs (Autor: Rafael Sachetto): https://github.com/rsachetto/odecom
 
 Biblioteca para construção e simulação de ACs:
 Dependência: Cython
-pip3 install Cython  
+
+pip3 install Cython
