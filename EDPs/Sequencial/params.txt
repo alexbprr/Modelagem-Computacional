@@ -1,0 +1,15 @@
+dt = 0.001
+tfinal = 1 
+Rb= 0.3 
+Lnb= 0.1 
+Db = 0.2     
+Pnfix = 0.005
+Pnrel = 0.15
+Kc = 10
+NBlood = 1E04
+Mn = 0.2
+Dn= 0.5
+Xn= 0.5
+Betacn= 0.2
+Mc= 0.6
+Dc= 1

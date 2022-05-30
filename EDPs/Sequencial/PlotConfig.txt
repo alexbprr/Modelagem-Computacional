@@ -1,0 +1,13 @@
+nruns: 1 
+numberOfDataFiles: 1
+dataNames: Bacteria, Neutrophil
+fileNames: result_ode.csv
+fileNameTime: t.csv
+separatePlots: true
+multipleValuesPerTime: false
+scales: default, default 
+units: cells/ml [10], cells/ml
+xAxisLabel: days
+xAxisRange: 0,100
+legendNames: Bacteria, Neutrophil 
+plotStyle: line

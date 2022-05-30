@@ -1,0 +1,8 @@
+Coisas a fazer: 
+ - Implementar sources e sinks no FDField; 
+ - Execução em paralelo:    
+ - Ideias para paralelização do PdeSolver: 
+    . Cada FDField é gerenciado por um grupo de threads/processos diferente. 
+    . O líder do grupo decide em quantas threads irá dividir o seu field e como será a distribuição do trabalho entre as threads. 
+ - Estudar grids não estruturados. 
+ - Estudar OpenCl. 

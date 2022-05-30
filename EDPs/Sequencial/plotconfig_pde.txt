@@ -1,0 +1,8 @@
+plotStyle: scatter3d
+yAxisLabel: cells/ml
+xAxisLabel: days
+separatePlots: true
+fileNames: , , 
+dataNames: bacteria, neutrophil, proinflammatory-cytokines
+xAxisRange: 0-50
+numberOfDataFiles: 3
