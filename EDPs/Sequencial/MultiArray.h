@@ -4,9 +4,9 @@
 
 /*
    The MultiArray class is an abstraction for a multi dimensional array that is implemented as a 
-   contiguos one dimensional array. This class inherits the Array class and it defines an attribute 
-   to store the sizes of each spatial dimension.
-   A one dimensional array can be implemented by defining the size of the second and third dimensions to be zero.
+   contiguos one dimensional array. This class inherits the Array class and defines an attribute 
+   to store the size of each spatial dimension.
+   An one dimensional array can be implemented by defining the size of the second and third dimensions to be zero.
    A two dimensional array can be implemented by defining the size of the third dimension to be zero.
 */
 class MultiArray : public virtual Array {
