@@ -132,33 +132,34 @@ double FDField::nonlinearDiffusion(std::unordered_map<std::string,double> params
     return 0;
 }
 
-double FDField::classicDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, double D, int x, int y, int z){
+double FDField::classicDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, 
+    double D, int x, int y, int z){
     double diffx = 0;
-    if (x > 0 && x < Nx)
+    if (x > 0 && x < Nx-1)
         diffx = (1/(dx*dx))*((*values)(x+1,y,z) - 2*(*values)(x,y,z) + (*values)(x-1,y,z));
     else if (x == 0)
         diffx = (1/(dx*dx))*((*values)(x+1,y,z) - (*values)(x,y,z));            
-    else if (x == Nx)
-        diffx = (1/(dx*dx))*((*values)(x,y,z) - (*values)(x-1,y,z));
+    else if (x == Nx-1)
+        diffx = (1/(dx*dx))*(-(*values)(x,y,z) + (*values)(x-1,y,z));
 
     double diffy = 0;         
     if (Ndim == d2D || Ndim == d3D) {        
-        if (y > 0 && y < Ny)
+        if (y > 0 && y < Ny-1)
             diffy = (1/(dy*dy))*((*values)(x,y+1,z) - 2*(*values)(x,y,z) + (*values)(x,y-1,z));
         else if (y == 0)
             diffy = (1/(dy*dy))*((*values)(x,y+1,z) - (*values)(x,y,z));            
-        else if (y == Ny)
-            diffy = (1/(dy*dy))*((*values)(x,y,z) - (*values)(x,y-1,z));
+        else if (y == Ny-1)
+            diffy = (1/(dy*dy))*(-(*values)(x,y,z) + (*values)(x,y-1,z));
     }
 
     double diffz = 0;
     if (Ndim == d3D){
-        if (z > 0 && z < Nz)
+        if (z > 0 && z < Nz-1)
             diffz = (1/(dz*dz))*((*values)(x,y,z+1) - 2*(*values)(x,y,z) + (*values)(x,y,z-1));
         else if (z == 0)
             diffz = (1/(dz*dz))*((*values)(x,y,z+1) - (*values)(x,y,z));            
-        else if (z == Nz)
-            diffz = (1/(dz*dz))*((*values)(x,y,z) - (*values)(x,y,z-1));
+        else if (z == Nz-1)
+            diffz = (1/(dz*dz))*(-(*values)(x,y,z) + (*values)(x,y,z-1));
     }
     return D*(diffx + diffy + diffz);
 }
@@ -195,7 +196,7 @@ double FDField::classicChemotaxis(std::unordered_map<std::string,double> params,
         else            
             flux_left = -(c - cm1x)* n / dx;
     }
-    if(x < Nx) {
+    if(x < Nx-1) {
         if(cp1x - c > 0)        
             flux_right = (cp1x - c)* n / dx;
         else
@@ -211,7 +212,7 @@ double FDField::classicChemotaxis(std::unordered_map<std::string,double> params,
             else            
                 flux_left = -(c - cm1y)* n / dy;
         }
-        if(y < Ny) {
+        if(y < Ny-1) {
             if(cp1y - c > 0)        
                 flux_right = (cp1y - c)* n / dy;
             else
@@ -228,7 +229,7 @@ double FDField::classicChemotaxis(std::unordered_map<std::string,double> params,
             else            
                 flux_left = -(c - cm1z)* n / dz;
         }
-        if(z < Nz) {
+        if(z < Nz-1) {
             if(cp1z - c > 0)        
                 flux_right = (cp1z - c)* n / dz;
             else

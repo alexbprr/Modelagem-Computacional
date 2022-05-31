@@ -11,7 +11,8 @@ public:
     double reactions(std::unordered_map<string,double> params, std::unordered_map<string,FDField*> fields, int x, int y, int z){
         double b = (*values)(x,y,z);
         double n = (*fields["neutrophil"])(x,y,z);
-        return params["Rb"]*b - params["Lnb"]*n*b; 
+        //return params["Rb"]*b - params["Lnb"]*n*b;
+        return 0; 
     }
     double diffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, int x, int y, int z){ 
         return classicDiffusion(params, fields, params["Db"], x, y, z);
@@ -28,7 +29,8 @@ public:
         if (hasSource(x,y,z)){
             sourceN = params["NBlood"]*(params["Pnfix"] + params["Pnrel"]*c/(c + params["Kc"]));
         }        
-        return sourceN - params["mn"]*n;
+        //return sourceN - params["mn"]*n;
+        return 0;
     }
     double diffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, int x, int y, int z){ 
         return classicDiffusion(params, fields, params["Dn"], x, y, z);
@@ -45,7 +47,8 @@ public:
         double c = (*values)(x,y,z);
         double b = (*fields["bacteria"])(x,y,z);
         double n = (*fields["neutrophil"])(x,y,z);        
-        return params["Betacn"]*b - params["Mc"]*c;
+        //return params["Betacn"]*b - params["Mc"]*c;
+        return 0;
     }
     double diffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, int x, int y, int z){ 
         return classicDiffusion(params, fields, params["Dc"], x, y, z);
@@ -53,7 +56,7 @@ public:
 };
 
 int main(int argc, char *argv[]){    
-    int d[3] = {5,5,0}; //Size of each spatial dimension 
+    int d[3] = {5,0,0}; //Size of each spatial dimension 
     double deltas[3] = {0.1,0.1,0.1}; //Size of the spatial discretizations 
     BField *bacteria = new BField("bacteria",d,deltas);    
     NField *neutrophil = new NField("neutrophil",d,deltas);
@@ -66,7 +69,7 @@ int main(int argc, char *argv[]){
     neutrophil->addSource(3.0, 5, 0);
     //neutrophil->printSources();
     
-    bacteria->setInitialValue(4.2,2,0,10);
+    bacteria->setInitialValue(2.5,0,0,10);
     
     PdeSolver *solver = new PdeSolver(50, 0.01);
     solver->saveTime();

@@ -20,10 +20,12 @@ for ind, result in enumerate(results):
 
     # Supondo que o CSV está da seguinte forma:
     # valor_x, valor_y, *multiplos_outros_valores, ...
-    x, values = read_np_from_csv(result)
+    #x, values = read_np_from_csv(result)
+
+    df = pd.read_csv(result)
 
     fig = plt.figure()
     # Plot x line and y
-    plt.plot(x, values, label=ind)
+    plt.plot(df["x"], df["value"], label=ind)
     fig.savefig(result + ".svg", format="svg", bbox_inches="tight")
     #plt.show()
