@@ -67,13 +67,20 @@ p_filename = 'predador'
 path = 'data/'
 t = getArrayFromFile(path+'t.dat')
 
-times = [2,15,30,45.045,49,50]
-popdata = [22,
-        52.8,
-        83.4,
-        95.759,
-        97,
-        97.3]
+times = [1.6,
+5,
+12.2,
+25.4,
+38,
+48,
+50]
+popdata = [22.679,
+29.278,
+45.825,
+75.921,
+91.801,
+96.826,
+97.374]
 
 fig = plt.figure(figsize=(10,7))
 ax = fig.gca()
@@ -86,9 +93,10 @@ def logistico(a, n, K, i):
 
 T = 1000
 n = []
-n.append(19.87) 
-r = 0.10307
-k = 98.60712 
+
+n.append(2.00550701e+01) 
+r = 9.95743640e-02
+k = 1.00085415e+02 
 tfinal = 50
 t = np.linspace(0, tfinal, T)
 dt = (tfinal - 0)/T

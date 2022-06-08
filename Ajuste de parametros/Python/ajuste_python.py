@@ -40,30 +40,30 @@ def isReferenceTime(times, ct):
 
 def solve(x):
     (tfinal,t,dt) = setTime()
-    #P = setInitialCondition()
+    N0 = x[0]
     r = x[1]
     k = x[2]
-    params = (r,k)
-    P = np.zeros(1)
-    P[0] = x[0]
+    params = (r, k)
+    P = [N0]
     
     def solveOde(t, y):
         return odeSystem(t, y, *params)
 
     results = solve_ivp(solveOde,(0, tfinal), P, t_eval=t, method='Radau')    
 
-    N = results.y[0,:]    
+    N = results.y[0,:]
     error = 0
+    sumobs = 0
     i = 0
     j = 0
-    for t in np.arange(dt,tfinal+dt,dt):
+    for t in np.arange(0,tfinal,dt):
         if isReferenceTime(reference_times,t):
-            #print('t ' + str(t))
-            #print('data ' + str(data[i]))
-            error += (N[j] - data[i])*(N[j] - data[i])            
+            error += (N[j] - data[i])*(N[j] - data[i]) 
+            sumobs += data[i]*data[i]
             i = i + 1
         j = j + 1
-                 
+
+    error = math.sqrt(error/sumobs) #Erro norma 2                  
     return error 
 
 if __name__ == "__main__":
@@ -74,26 +74,12 @@ if __name__ == "__main__":
         (1, 200), (0.01, 1), (1,200)
     ]
     #chama evolução diferencial, result contém o melhor individuo
-    solucao = differential_evolution(solve, bounds, tol=10**(-2), 
-    strategy='best1bin', maxiter=50,popsize=50, disp=True, workers=4)
+    solucao = differential_evolution(solve, bounds, tol=10**(-4), 
+    strategy='best1bin', maxiter=100,popsize=50, disp=True, workers=4)
     print(solucao.x)
     print(solucao.success)
     #saving the best offspring...
     np.savetxt('solucao_ajuste_1.txt',solucao.x, fmt='%.2f')        
     best=solucao.x
-   
-    #saving the samples for UQ
-    #np.savetxt('execution_de.txt',execution_de)
-   
-    #error, N = solve(best)
     error = solve(best)
     print("ERROR ", error)
-    
-    """ plt.figure();
-    plt.title("Virus")
-    plt.plot(ts, np.log10(V), label='Viremia model', linewidth=1.5)
-    plt.errorbar(dadosViremia['Day']-1, virus_mean, yerr=[virus_min, virus_max],linestyle='None', label='Data', fmt='o', color='red', capsize=4, elinewidth=2)
-    plt.legend(loc="best",prop={'size': 13})
-    plt.grid(True)
-    plt.tight_layout()    
-    plt.savefig('output_survivor_virus.pdf',bbox_inches='tight',dpi = 300) """

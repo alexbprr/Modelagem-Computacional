@@ -51,7 +51,7 @@ class TestDE : public de::IOptimizable{
 public:
     //Solve system and calculate error  
     double EvaluteCost(std::vector<double> inputs) const override{
-        double t, error = 0; 
+        double t, error = 0, sumexact = 0; 
         int i = 0;
         u.reserve(1);
         u.resize(1);  
@@ -59,13 +59,16 @@ public:
         r = inputs[1]; 
         K = inputs[2];
         error = 0;
+        sumexact = 0;
         for (t = tini; t <= tfinal; t += dt){
             u = advance(t,u);            
             if (isReferenceTime(reference_times,t)){
-                error += (u[0] - data[i])*(u[0] - data[i]); //Soma dos quadrados dos erros                
+                error += (u[0] - data[i])*(u[0] - data[i]); //Soma dos quadrados dos erros
+                sumexact += u[0]*u[0]; 
                 i++; 
             }
-        }    
+        }
+        error = sqrt(error/sumexact); //Erro norma 2     
         return error;
     }
 
@@ -83,9 +86,7 @@ public:
     }
 
     static bool terminationCondition(const DifferentialEvolution& de){
-        //cout << "Testing termination condition" << endl; 
-        //cout << "Best cost " << de.GetBestCost() << endl;
-        if (de.GetBestCost() <= 1)
+        if (de.GetBestCost() <= 0.001)
             return true;
         return false; 
     }
