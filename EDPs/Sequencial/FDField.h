@@ -30,7 +30,7 @@ protected:
     IntMultiArray *sources; //sources(i,j,k) == 1: there is a source in index i,j,k
     IntMultiArray *sinks; //sink(i,j,k) == 1: there is a sink in index i,j,k
 
-    double nonlinearDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, double D, int x, int y, int z);
+    double nonlinearDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, double D, string W, int x, int y, int z);
     double classicDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, double D, int x, int y, int z);
     virtual double diffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, int x, int y, int z); 
     double classicChemotaxis(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, std::string u, std::string c, double X, int x, int y, int z);

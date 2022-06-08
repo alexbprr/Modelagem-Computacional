@@ -128,7 +128,49 @@ void FDField::printSinks(){
 
 }
 
-double FDField::nonlinearDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, double D, int x, int y, int z){
+double FDField::nonlinearDiffusion(std::unordered_map<std::string,double> params, std::unordered_map<std::string,FDField*> fields, double D, string W, int x, int y, int z){
+    double n = (*values)(x,y,z);
+    double np1x = (*values)(x+1,y,z);
+    double nm1x = (*values)(x-1,y,z);
+    double np1y = (*values)(x,y+1,z);
+    double nm1y = (*values)(x,y-1,z);
+    double np1z = (*values)(x,y,z+1);
+    double nm1z = (*values)(x,y,z-1);
+
+    FDField *cfield = fields[W];
+    double c = (*cfield->values)(x,y,z);
+    double cp1x = (*cfield->values)(x+1,y,z);
+    double cm1x = (*cfield->values)(x-1,y,z);
+    double cp1y = (*cfield->values)(x,y+1,z);
+    double cm1y = (*cfield->values)(x,y-1,z);
+    double cp1z = (*cfield->values)(x,y,z+1);
+    double cm1z = (*cfield->values)(x,y,z-1);
+
+    double n_bordadirx = (np1x + n)/2;
+    double n_bordaesqx = (n + nm1x)/2;
+    double c_bordadirx = (cp1x + c)/2;
+    double c_bordaesqx = (c + cm1x)/2;
+
+    /*bfd = (b[t][x+1] + b[t][x])/2;
+    #gradbfd = (b[t][x+1] - b[t][x]); #/deltaX;
+    gradbfe = (b[t][x] - b[t][x-1]) #/deltaX;
+    if(x == 0):  
+        fronteiraDireita(b, n, x, t);
+        bfe = (b[t][x])/2;
+        nfe = (n[t][x])/2;
+        gradbfe = 0                
+        return alpha*(bfd/(1 + beta*nfd)*gradbfd)/(deltaX*deltaX) 
+    elif(x == size-1):         
+        fronteiraEsquerda(b, n, x, t);
+        bfd = (b[t][x])/2;
+        nfd = (n[t][x])/2;
+        gradbfd = 0
+        return alpha*(- bfe/(1 + beta*nfe)*gradbfe)/(deltaX*deltaX ) 
+    else:
+        fronteiraDireita(b, n, x, t);
+        fronteiraEsquerda(b, n, x, t);
+        return alpha*(bfd/(1 + beta*nfd)*gradbfd - bfe/(1 + beta*nfe)*gradbfe)/(deltaX*deltaX ) 
+    */
     return 0;
 }
 
