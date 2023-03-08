@@ -1,2 +1,0 @@
-Prey = 30
-Predator = 5
